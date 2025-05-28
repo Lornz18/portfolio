@@ -31,9 +31,9 @@ export default function Home() {
               Crafting intuitive and modern web interfaces.
             </h1>
             <p className="md:text-[20px] text-secondary">
-              Let&apos;s create seamless, user-centered designs that bring your ideas
-              to life. Explore my work and let&apos;s build something amazing
-              together.
+              Let&apos;s create seamless, user-centered designs that bring your
+              ideas to life. Explore my work and let&apos;s build something
+              amazing together.
             </p>
           </div>
           <div
@@ -207,38 +207,36 @@ export default function Home() {
                 ],
               },
             ].map((item, idx) => (
-              <div
-                key={item.image}
-                data-aos="fade-up"
-                className="bg-light text-primary rounded-xl shadow-md hover:scale-[1.02] transition-transform duration-300 p-4 md:p-8"
-              >
-                <div className="flex flex-col lg:flex-row lg:items-start gap-6 lg:gap-12">
-                  <div className="w-full lg:w-[45%] h-60 md:h-80 rounded-xl shadow-2xl overflow-hidden mb-4 lg:mb-0">
-                    <Image
-                      src={`/${item.image}`}
-                      alt={item.image}
-                      width={1000}
-                      height={1000}
-                      className="w-full h-full object-cover object-top"
-                      priority={idx === 0}
-                    />
-                  </div>
-                  <div className="w-full lg:w-[55%] flex flex-col justify-between">
-                    <h2 className="text-xl md:text-2xl font-semibold mb-2">
-                      {item.name}
-                    </h2>
-                    <p className="text-secondary whitespace-pre-line mb-4">
-                      {item.description}
-                    </p>
-                    <div className="flex flex-wrap items-center gap-2">
-                      {item.feature?.map((feature, key) => (
-                        <span
-                          key={key}
-                          className="py-2 px-4 md:px-5 bg-primary text-light rounded-2xl text-xs md:text-sm break-words"
-                        >
-                          {feature}
-                        </span>
-                      ))}
+              <div key={item.image} data-aos="fade-up">
+                <div className="bg-light text-primary rounded-xl shadow-md hover:scale-[1.02] transition-transform duration-300 p-4 md:p-8">
+                  <div className="flex flex-col lg:flex-row lg:items-start gap-6 lg:gap-12">
+                    <div className="w-full lg:w-[45%] h-60 md:h-80 rounded-xl shadow-2xl overflow-hidden mb-4 lg:mb-0">
+                      <Image
+                        src={`/${item.image}`}
+                        alt={item.image}
+                        width={1000}
+                        height={1000}
+                        className="w-full h-full object-cover object-top"
+                        priority={idx === 0}
+                      />
+                    </div>
+                    <div className="w-full lg:w-[55%] flex flex-col justify-between">
+                      <h2 className="text-xl md:text-2xl font-semibold mb-2">
+                        {item.name}
+                      </h2>
+                      <p className="text-secondary whitespace-pre-line mb-4">
+                        {item.description}
+                      </p>
+                      <div className="flex flex-wrap items-center gap-2">
+                        {item.feature?.map((feature, key) => (
+                          <span
+                            key={key}
+                            className="py-2 px-4 md:px-5 bg-primary text-light rounded-2xl text-xs md:text-sm break-words"
+                          >
+                            {feature}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
