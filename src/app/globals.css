@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --primary: #0d0d0d;
+  --light: #f9f9f9;
+  --secondary: #b0b0b0;
+}
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-primary: var(--primary);
+  --color-light: var(--light);
+  --color-secondary: var(--secondary);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--primary);
+  color: var(--light);
+  scroll-behavior: smooth;
+}
+
+.container {
+  width: 100%;
+  max-width: 90rem;
+  padding: 1.5rem;
+  margin: 0 auto;
+}
+
+.btn-primary {
+  @apply cursor-pointer rounded-[2rem] border-solid border-[1px] border-secondary py-[.5rem] px-[3.5rem] bg-[rgba(60,60,67,0.29)] text-secondary shadow-[4px_-4px_4px_rgba(249,249,249,0.25)] transition-all transform-3d duration-300;
+}
+
+.btn-primary:hover {
+  @apply bg-light text-primary shadow-[4px_-4px_4px_rgba(249,249,249,0.25)] transition-all transform-3d duration-300;
+}
+
+.b-title{
+  @apply text-primary bg-secondary rounded-2xl px-[1.5rem] py-[.4rem]
+}
+
+
+
+.nav span{
+  width: 2.5rem;
+  height: .1rem;
+  background-color: var(--secondary);
+  border-radius: .5rem;
+}
+
+.card.active {
+  opacity: 1;
+  transform: translateY(0px);
+}
+
+
