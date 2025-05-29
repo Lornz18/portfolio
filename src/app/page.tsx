@@ -337,25 +337,25 @@ export default function Home() {
                 <div className="flex items-center justify-between gap-3">
                   <span className="text-light">Email</span>
                   <a
-                    href="mailto:info@example.com"
+                    href="mailto:audielorenz18@gmail.com"
                     className="text-secondary hover:text-light transition-all duration-300"
                   >
-                    info@example.com
+                    audielorenz18@gmail.com
                   </a>
                 </div>
                 <div className="flex items-center justify-between gap-3">
                   <span className="text-light">Phone</span>
                   <a
-                    href="tel:+1234567890"
+                    href="tel:+639158158134"
                     className="text-secondary hover:text-light transition-all duration-300"
                   >
-                    +1 (234) 567-890
+                    +63 (915) 8158134
                   </a>
                 </div>
                 <div className="flex items-center justify-between gap-3">
                   <span className="text-light">Address</span>
                   <span className="text-secondary text-right">
-                    123 Main Street, City, Country
+                    Riverside Park Subd. Brgy. Maligaya Dolores, Quezon
                   </span>
                 </div>
               </div>
