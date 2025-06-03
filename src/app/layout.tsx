@@ -22,8 +22,23 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Audie.dev",
-  description: "Welcome to Audie.dev, a portfolio showcasing my projects, skills, and experience as a web developer. Explore my work, learn about my background, and get in touch for collaboration opportunities.",
+  description:
+    "Welcome to Audie.dev, a portfolio showcasing my projects, skills, and experience as a web developer. Explore my work, learn about my background, and get in touch for collaboration opportunities.",
+  openGraph: {
+    title: "Audie.dev",
+    description:
+      "Welcome to Audie.dev, a portfolio showcasing my projects, skills, and experience as a web developer. Explore my work, learn about my background, and get in touch for collaboration opportunities.",
+    images: [
+      {
+        url: "https://audie-dev.vercel.app/Audie.dev.png", // Replace with your actual image URL
+        width: 1200,
+        height: 630,
+        alt: "Audie.dev - Web Developer Portfolio",
+      },
+    ],
+  },
 };
+
 
 export default function RootLayout({
   children,
