@@ -1,10 +1,16 @@
 "use client";
 import React, { useEffect, useRef } from "react";
 import Image from "next/image";
-import { HomeIcon } from "@heroicons/react/24/solid";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import {
+  MonitorSmartphone,
+  PenTool,
+  Gauge,
+  Accessibility,
+  Briefcase,
+} from "lucide-react";
 
 export default function Home() {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -92,31 +98,31 @@ export default function Home() {
               {[
                 {
                   title: "Responsive Web Development",
-                  icon: <HomeIcon className="w-6 h-6" />,
+                  icon: <MonitorSmartphone className="w-6 h-6" />,
                   description:
                     "Building mobile-first websites using modern frameworks.",
                 },
                 {
                   title: "UI/UX Design",
-                  icon: <HomeIcon className="w-6 h-6" />,
+                  icon: <PenTool className="w-6 h-6" />,
                   description:
                     "Designing intuitive interfaces and user experiences for maximum engagement.",
                 },
                 {
                   title: "Performance Optimization",
-                  icon: <HomeIcon className="w-6 h-6" />,
+                  icon: <Gauge className="w-6 h-6" />,
                   description:
                     "Improving speed, responsiveness, and efficiency for better user retention.",
                 },
                 {
                   title: "Accessibility",
-                  icon: <HomeIcon className="w-6 h-6" />,
+                  icon: <Accessibility className="w-6 h-6" />,
                   description:
                     "Making websites usable for everyone, including users with disabilities.",
                 },
                 {
                   title: "Consulting",
-                  icon: <HomeIcon className="w-6 h-6" />,
+                  icon: <Briefcase className="w-6 h-6" />,
                   description:
                     "Guiding development teams and businesses to achieve scalable solutions.",
                 },
@@ -139,7 +145,7 @@ export default function Home() {
                     </div>
                     <XMarkIcon
                       className={`w-6 h-6 text-light transition-all duration-800 ${
-                        openDropdown === index ? "rotate-45" : ""
+                        openDropdown === index ? "" : "rotate-45"
                       }`}
                     />
                   </div>

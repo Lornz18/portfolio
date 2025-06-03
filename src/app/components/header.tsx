@@ -1,6 +1,6 @@
 // components/Header.tsx
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 
 export default function Header() {
   const [navOpen, setNavOpen] = React.useState(false);
@@ -9,8 +9,21 @@ export default function Header() {
     setNavOpen((prev) => !prev);
   };
 
+  useEffect(() => {
+    if (navOpen) {
+      document.body.style.overflow = "hidden"; // Disable scroll
+    } else {
+      document.body.style.overflow = ""; // Reset to default
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [navOpen]);
+
   return (
-    <header className="text-[20px] text-secondary container flex items-center justify-between relative">
+    <header className="text-[20px] text-secondary container flex items-center justify-between">
       <h1>Audie.dev</h1>
 
       <div className="">
@@ -23,7 +36,7 @@ export default function Header() {
           <span></span>
         </div>
         <div
-          className={`absolute bottom-[-54rem] w-full h-[100vh]
+          className={`absolute top-[5rem] w-full h-full
           bg-white/30 backdrop-blur-md backdrop-brightness-110 z-[999]
           transition-all duration-300 shadow-lg text-light lg:text-secondary lg:relative lg:left-0 lg:bg-primary lg:top-0 lg:h-full lg:p-0 lg:shadow-none
           ${navOpen ? "left-0" : "-left-full"}`}
@@ -36,6 +49,7 @@ export default function Header() {
                 document
                   .getElementById("services")
                   ?.scrollIntoView({ behavior: "smooth" });
+                toggleNav();
               }}
             >
               Services
@@ -47,6 +61,7 @@ export default function Header() {
                 document
                   .getElementById("projects")
                   ?.scrollIntoView({ behavior: "smooth" });
+                toggleNav();
               }}
             >
               Projects
@@ -61,6 +76,7 @@ export default function Header() {
                 document
                   .getElementById("contacts")
                   ?.scrollIntoView({ behavior: "smooth" });
+                toggleNav();
               }}
             >
               Contacts
