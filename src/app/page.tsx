@@ -33,7 +33,6 @@ export default function Home() {
   };
   // --- End of Chatbot State and Handlers ---
 
-
   const toggleDropdown = (index: number) => {
     setOpenDropdown((prev) => (prev === index ? null : index));
   };
@@ -54,8 +53,8 @@ export default function Home() {
               Crafting intuitive and modern web interfaces.
             </h1>
             <p className="md:text-[20px] text-secondary">
-              Let's create seamless, user-centered designs that bring your
-              ideas to life. Explore my work and let's build something
+              Let&apos;s create seamless, user-centered designs that bring your
+              ideas to life. Explore my work and let&apos;s build something
               amazing together.
             </p>
           </div>
@@ -197,8 +196,8 @@ export default function Home() {
             <span className="b-title">Projects</span>
             <h1 className="text-[32px]">Get inspired by my work</h1>
             <p className="text-[16px] text-secondary">
-              Some of the work I’ve built — from concept to clean, responsive
-              interfaces.
+              Some of the work I&apos;ve built — from concept to clean,
+              responsive interfaces.
             </p>
           </div>
 
@@ -284,8 +283,8 @@ export default function Home() {
               <h1 className="text-[32px]">Get In Touch</h1>
               <p className="text-[16px] text-secondary">
                 If you have any questions or would like to discuss your ideas in
-                more detail, please don’t hesitate to reach out to our dedicated
-                team through the contact information below.
+                more detail, please don&apos;t hesitate to reach out to our
+                dedicated team through the contact information below.
               </p>
             </div>
 
@@ -486,9 +485,7 @@ export default function Home() {
       )}
 
       {/* Conditionally render the Chatbot */}
-      {isChatOpen && (
-        <Chatbot onClose={handleCloseChat} isclose={isChatOpen} />
-      )}
+      {isChatOpen && <Chatbot onClose={handleCloseChat} isclose={isChatOpen} />}
     </div>
   );
 }
