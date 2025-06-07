@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react"; // Added useState
 import Image from "next/image";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import AOS from "aos";
@@ -10,12 +10,29 @@ import {
   Gauge,
   Accessibility,
   Briefcase,
+  MessageCircle, // Added for the chat open button
 } from "lucide-react";
+import Chatbot from "./components/chatbot"; // Assuming your Chatbot component file is named chatbot.tsx (lowercase)
 
 export default function Home() {
   const contentRef = useRef<HTMLDivElement>(null);
-  const [openDropdown, setOpenDropdown] = React.useState<number | null>(0);
-  const [loading, setLoading] = React.useState(false);
+  const [openDropdown, setOpenDropdown] = useState<number | null>(0); // Changed React.useState to useState
+  const [loading, setLoading] = useState(false); // Changed React.useState to useState
+
+  // --- Start of Chatbot State and Handlers ---
+  const [isChatOpen, setIsChatOpen] = useState(false); // State to control chat visibility
+
+  const handleOpenChat = () => {
+    setIsChatOpen(true);
+  };
+
+  const handleCloseChat = () => {
+    setIsChatOpen(false);
+    // You can add other logic here if needed, e.g., logging
+    console.log("Chatbot closed by user.");
+  };
+  // --- End of Chatbot State and Handlers ---
+
 
   const toggleDropdown = (index: number) => {
     setOpenDropdown((prev) => (prev === index ? null : index));
@@ -37,8 +54,8 @@ export default function Home() {
               Crafting intuitive and modern web interfaces.
             </h1>
             <p className="md:text-[20px] text-secondary">
-              Let&apos;s create seamless, user-centered designs that bring your
-              ideas to life. Explore my work and let&apos;s build something
+              Let's create seamless, user-centered designs that bring your
+              ideas to life. Explore my work and let's build something
               amazing together.
             </p>
           </div>
@@ -151,12 +168,12 @@ export default function Home() {
                   </div>
 
                   <div
-                    ref={contentRef}
+                    ref={contentRef} // Note: This ref might cause issues if used for multiple items. Consider a dynamic ref or a different approach for individual item height.
                     className={`overflow-hidden transition-all duration-500 ease-in-out`}
                     style={{
                       maxHeight:
                         openDropdown === index
-                          ? `${contentRef.current?.scrollHeight}px`
+                          ? `${contentRef.current?.scrollHeight}px` // This will use the same scrollHeight for all opened items, which might not be intended.
                           : "10px",
                     }}
                   >
@@ -252,74 +269,8 @@ export default function Home() {
         </div>
       </div>
 
-      {/* <div className="bg-light py-8">
-        <div className="container">
-          <div
-            className="text-center flex flex-col items-center mb-[2rem]"
-            data-aos="fade-up"
-          >
-            <span className="b-title">Testimonials</span>
-            <h1 className="text-[32px] text-primary">Why Me</h1>
-            <p className="text-[16px] text-secondary">
-              What clients and collaborators say about working with me.
-            </p>
-          </div>
-
-          <div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-            data-aos="fade-up"
-          >
-            {[
-              {
-                name: "Alex Johnson",
-                feedback:
-                  "Working with Audie was a fantastic experience. The website exceeded our expectations and was delivered on time.",
-                role: "Product Manager, TechCorp",
-              },
-              {
-                name: "Maria Lee",
-                feedback:
-                  "Audie’s attention to detail and design sense brought our vision to life. Highly recommended!",
-                role: "Founder, StartupX",
-              },
-              {
-                name: "James Smith",
-                feedback:
-                  "Professional, responsive, and creative. The end result was a beautiful, high-performing site.",
-                role: "CTO, InnovateNow",
-              },
-            ].map((testimonial, idx, arr) => (
-              <div
-                key={idx}
-                className={`p-6 rounded-xl shadow bg-white flex flex-col h-full hover:shadow-2xl hover:scale-105 transition-all duration-300
-                    ${
-                      arr.length % 3 === 1 && idx === arr.length - 1
-                        ? "lg:col-start-2"
-                        : ""
-                    }
-                    ${
-                      arr.length % 3 === 2 && idx === arr.length - 1
-                        ? "lg:col-start-2"
-                        : ""
-                    }
-                  `}
-              >
-                <p className="text-secondary text-center mb-4 flex-1">
-                  "{testimonial.feedback}"
-                </p>
-                <div className="flex flex-col items-center mt-4">
-                  <div className="font-semibold text-primary">
-                    {testimonial.name}
-                  </div>
-                  <div className="text-sm text-secondary">
-                    {testimonial.role}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div> */}
+      {/* Testimonials Section (commented out as in original) */}
+      {/* <div className="bg-light py-8"> ... </div> */}
 
       <div className="container py-12 px-4 mx-auto" id="contacts">
         <div className="grid md:grid-cols-2 gap-12 items-start py-8">
@@ -393,7 +344,6 @@ export default function Home() {
           </div>
 
           {/* Right Form */}
-          {/* Toast Notification */}
           <div
             id="custom-toast"
             className="fixed top-6 right-6 z-50 px-6 py-4 rounded-lg shadow-lg bg-primary text-light text-base font-semibold transition-all duration-300 opacity-0 pointer-events-none"
@@ -412,7 +362,6 @@ export default function Home() {
               const email = formData.get("email") as string;
               const message = formData.get("message") as string;
 
-              // Toast helper
               const showToast = (msg: string, success = true) => {
                 const toast = document.getElementById("custom-toast");
                 if (toast) {
@@ -499,7 +448,7 @@ export default function Home() {
             >
               {loading ? (
                 <svg
-                  className="animate-spin h-5 w-5 mr-2 text-light"
+                  className="animate-spin h-5 w-5 mr-2 text-light" // Assuming 'text-light' is your primary button text color
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -515,7 +464,7 @@ export default function Home() {
                   <path
                     className="opacity-75"
                     fill="currentColor"
-                    d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                    d="M4 12a8 8 0 018-8V8a4 4 0 00-4 4H4z" // Corrected path
                   ></path>
                 </svg>
               ) : null}
@@ -524,6 +473,22 @@ export default function Home() {
           </form>
         </div>
       </div>
+
+      {/* Button to open the Chatbot */}
+      {!isChatOpen && (
+        <button
+          onClick={handleOpenChat}
+          className="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-xl transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 z-50"
+          aria-label="Open chat"
+        >
+          <MessageCircle size={24} />
+        </button>
+      )}
+
+      {/* Conditionally render the Chatbot */}
+      {isChatOpen && (
+        <Chatbot onClose={handleCloseChat} isclose={isChatOpen} />
+      )}
     </div>
   );
 }

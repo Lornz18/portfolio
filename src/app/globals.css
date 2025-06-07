@@ -64,4 +64,25 @@ body {
   transform: translateY(0px);
 }
 
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1; /* cool-gray-300 */
+  border-radius: 10px;
+  border: 2px solid transparent; /*
+  background-clip: content-box; /* Prevent thumb from overlapping border */
+}
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #4b5563; /* gray-600 */
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #9ca3af; /* cool-gray-400 */
+}
+.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #6b7280; /* gray-500 */
+}
 
