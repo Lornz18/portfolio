@@ -1,11 +1,17 @@
 import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { writeFile } from "fs/promises";
+import { writeFile, unlink } from "fs/promises";
 import path from "path";
 import { randomUUID } from "crypto";
 
 const key = process.env.GEMINI_KEY;
 const genAI = new GoogleGenerativeAI(key || "");
+
+export const config = {
+  api: {
+    bodyParser: false, // required to handle formData
+  },
+};
 
 export async function POST(req: Request) {
   try {
@@ -19,23 +25,19 @@ export async function POST(req: Request) {
       );
     }
 
+    // Max 10MB file size
+    if (file.size > 10 * 1024 * 1024) {
+      return NextResponse.json(
+        { success: false, error: "File too large. Max 10MB allowed." },
+        { status: 413 }
+      );
+    }
+
     const buffer = Buffer.from(await file.arrayBuffer());
     const filename = `${randomUUID()}-${file.name}`;
     const filePath = path.join(process.cwd(), "public/uploads", filename);
 
-    // Optional: save file locally
-    await writeFile(filePath, buffer);
-
-    // After generating content, delete the uploaded file
-    const deleteUploadedFile = async () => {
-      try {
-        await import("fs/promises").then(fs => fs.unlink(filePath));
-      } catch (err) {
-        console.error("Failed to delete uploaded file:", err);
-      }
-    };
-
-    // Optional: save file locally
+    // Save file locally
     await writeFile(filePath, buffer);
 
     // Generate content with Gemini
@@ -61,7 +63,10 @@ export async function POST(req: Request) {
     });
 
     const caption = result.response.text();
-    await deleteUploadedFile();
+
+    // Delete uploaded file after use
+    await unlink(filePath);
+
     return NextResponse.json({
       success: true,
       caption,

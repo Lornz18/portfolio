@@ -1,6 +1,8 @@
 "use client";
+import { MessageCircle } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
+import Chatbot from "../components/chatbot";
 
 export default function SamplePage() {
   const [file, setFile] = useState<File | null>(null);
@@ -9,10 +11,34 @@ export default function SamplePage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
+  // --- Start of Chatbot State and Handlers ---
+    const [isChatOpen, setIsChatOpen] = useState(false); // State to control chat visibility
+  
+    const handleOpenChat = () => {
+      setIsChatOpen(true);
+    };
+  
+    const handleCloseChat = () => {
+      setIsChatOpen(false);
+      // You can add other logic here if needed, e.g., logging
+      console.log("Chatbot closed by user.");
+    };
+    // --- End of Chatbot State and Handlers ---
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0] || null;
-    setFile(selectedFile);
+
     if (selectedFile) {
+      const maxSizeInBytes = 10 * 1024 * 1024; // 10MB
+
+      if (selectedFile.size > maxSizeInBytes) {
+        setMessage("File is too large. Max size is 10MB.");
+        setFile(null);
+        setPreview(null);
+        return;
+      }
+
+      setFile(selectedFile);
       setPreview(URL.createObjectURL(selectedFile));
       setCaption("");
       setMessage("");
@@ -55,7 +81,7 @@ export default function SamplePage() {
 
   return (
     <div className="container p-4">
-      <h1 className="text-2xl font-bold mb-4">Ai Image Description</h1>
+      <h1 className="text-2xl font-bold mb-4">AI Image Description</h1>
       <p className="mb-4">
         Upload an image to get a detailed description powered by Gemini AI.
         <br />
@@ -72,11 +98,14 @@ export default function SamplePage() {
           className="cursor-pointer"
         />
       </div>
+
       {preview && (
         <Image
-          src={`${preview}`}
+          src={preview}
           alt="Preview"
-          className="mt-4 w-64 rounded shadow border border-gray-300"
+          width={256}
+          height={256}
+          className="mt-4 rounded shadow border border-gray-300"
         />
       )}
 
@@ -98,6 +127,20 @@ export default function SamplePage() {
           <p className="text-gray-800 whitespace-pre-line">{caption}</p>
         </div>
       )}
+
+      {/* Button to open the Chatbot */}
+      {!isChatOpen && (
+        <button
+          onClick={handleOpenChat}
+          className="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-xl transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 z-50"
+          aria-label="Open chat"
+        >
+          <MessageCircle size={24} />
+        </button>
+      )}
+
+      {/* Conditionally render the Chatbot */}
+      {isChatOpen && <Chatbot onClose={handleCloseChat} isclose={isChatOpen} />}
     </div>
   );
 }
