@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "@heroicons/react": "^2.2.0",
     "aos": "^2.3.4",
     "lucide-react": "^0.511.0",

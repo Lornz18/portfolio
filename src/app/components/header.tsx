@@ -71,6 +71,11 @@ export default function Header() {
             </li> */}
             <li
               className="cursor-pointer hover:text-light transition-all transform-gpu"
+            >
+              <a href="/sample">Sample Features</a>
+            </li>
+            <li
+              className="cursor-pointer hover:text-light transition-all transform-gpu"
               onClick={(e) => {
                 e.preventDefault();
                 document
