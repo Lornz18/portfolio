@@ -206,6 +206,7 @@ export default function Home() {
               {
                 image: "project 1.png",
                 name: "BidsnBuys",
+                link: "https://bidsnbuys.com/",
                 feature: [
                   "AI",
                   "E-commerce",
@@ -218,6 +219,7 @@ export default function Home() {
               {
                 image: "project 2.png",
                 name: "Water District Portal",
+                link: "https://test-539c3.web.app/",
                 description:
                   "A unified web and mobile app platform for managing water district services. Both platforms are connected to a shared backend for real-time synchronization. The mobile app includes an offline mode for uninterrupted access to key features.",
                 feature: [
@@ -228,40 +230,60 @@ export default function Home() {
                   "Support",
                 ],
               },
+              {
+                image: "wondertour.png",
+                name: "WonderTour Website",
+                link: "https://wondertour-acac9.web.app/",
+                description:
+                  "A fully responsive tourism website showcasing travel destinations, packages, and booking options. Built using HTML, CSS, JavaScript, and TailwindCSS, and hosted on Firebase for fast and secure deployment. The site highlights clean UI and smooth responsiveness across all device sizes.",
+                feature: [
+                  "Responsive Design",
+                  "TailwindCSS Styling",
+                  "Destination Showcase",
+                  "Package Details",
+                  "Firebase Hosting",
+                ],
+              },
             ].map((item, idx) => (
               <div key={item.image} data-aos="fade-up">
-                <div className="bg-light text-primary rounded-xl shadow-md hover:scale-[1.02] transition-transform duration-300 p-4 md:p-8">
-                  <div className="flex flex-col lg:flex-row lg:items-start gap-6 lg:gap-12">
-                    <div className="w-full lg:w-[45%] h-60 md:h-80 rounded-xl shadow-2xl overflow-hidden mb-4 lg:mb-0">
-                      <Image
-                        src={`/${item.image}`}
-                        alt={item.image}
-                        width={1000}
-                        height={1000}
-                        className="w-full h-full object-cover object-top"
-                        priority={idx === 0}
-                      />
-                    </div>
-                    <div className="w-full lg:w-[55%] flex flex-col justify-between">
-                      <h2 className="text-xl md:text-2xl font-semibold mb-2">
-                        {item.name}
-                      </h2>
-                      <p className="text-secondary whitespace-pre-line mb-4">
-                        {item.description}
-                      </p>
-                      <div className="flex flex-wrap items-center gap-2">
-                        {item.feature?.map((feature, key) => (
-                          <span
-                            key={key}
-                            className="py-2 px-4 md:px-5 bg-primary text-light rounded-2xl text-xs md:text-sm break-words"
-                          >
-                            {feature}
-                          </span>
-                        ))}
+                <a
+                  href={item.link} // <-- Add a `link` property to your item object
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <div className="bg-light text-primary rounded-xl shadow-md hover:scale-[1.02] transition-transform duration-300 p-4 md:p-8">
+                    <div className="flex flex-col lg:flex-row lg:items-start gap-6 lg:gap-12">
+                      <div className="w-full lg:w-[45%] h-60 md:h-80 rounded-xl shadow-2xl overflow-hidden mb-4 lg:mb-0">
+                        <Image
+                          src={`/${item.image}`}
+                          alt={item.image}
+                          width={1000}
+                          height={1000}
+                          className="w-full h-full object-cover object-top"
+                          priority={idx === 0}
+                        />
+                      </div>
+                      <div className="w-full lg:w-[55%] flex flex-col justify-between">
+                        <h2 className="text-xl md:text-2xl font-semibold mb-2">
+                          {item.name}
+                        </h2>
+                        <p className="text-secondary whitespace-pre-line mb-4">
+                          {item.description}
+                        </p>
+                        <div className="flex flex-wrap items-center gap-2">
+                          {item.feature?.map((feature, key) => (
+                            <span
+                              key={key}
+                              className="py-2 px-4 md:px-5 bg-primary text-light rounded-2xl text-xs md:text-sm break-words"
+                            >
+                              {feature}
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                </a>
               </div>
             ))}
           </div>
@@ -283,8 +305,8 @@ export default function Home() {
               <h1 className="text-[32px]">Get In Touch</h1>
               <p className="text-[16px] text-secondary">
                 If you have any questions or would like to discuss your ideas in
-                more detail, please don&apos;t hesitate to reach out to our
-                dedicated team through the contact information below.
+                more detail, please don&apos;t hesitate to reach out through the
+                contact information below.
               </p>
             </div>
 
