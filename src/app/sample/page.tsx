@@ -12,36 +12,37 @@ export default function SamplePage() {
   const [message, setMessage] = useState("");
 
   // --- Start of Chatbot State and Handlers ---
-    const [isChatOpen, setIsChatOpen] = useState(false); // State to control chat visibility
-  
-    const handleOpenChat = () => {
-      setIsChatOpen(true);
-    };
-  
-    const handleCloseChat = () => {
-      setIsChatOpen(false);
-      // You can add other logic here if needed, e.g., logging
-      console.log("Chatbot closed by user.");
-    };
-    // --- End of Chatbot State and Handlers ---
+  const [isChatOpen, setIsChatOpen] = useState(false); // State to control chat visibility
+
+  const handleOpenChat = () => {
+    setIsChatOpen(true);
+  };
+
+  const handleCloseChat = () => {
+    setIsChatOpen(false);
+    // You can add other logic here if needed, e.g., logging
+    console.log("Chatbot closed by user.");
+  };
+  // --- End of Chatbot State and Handlers ---
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0] || null;
 
     if (selectedFile) {
-      const maxSizeInBytes = 10 * 1024 * 1024; // 10MB
+      const maxSizeInBytes = 5 * 1024 * 1024; // 5MB
 
       if (selectedFile.size > maxSizeInBytes) {
-        setMessage("File is too large. Max size is 10MB.");
+        setMessage("❌ File is too large. Max size is 10MB.");
         setFile(null);
         setPreview(null);
+        setCaption(""); // clear previous caption
         return;
       }
 
       setFile(selectedFile);
       setPreview(URL.createObjectURL(selectedFile));
       setCaption("");
-      setMessage("");
+      setMessage(""); // clear any previous message
     }
   };
 
@@ -51,9 +52,15 @@ export default function SamplePage() {
       return;
     }
 
+    // Check file size client-side (optional, mirrors server check)
+    if (file.size > 10 * 1024 * 1024) {
+      setMessage("File too large. Max 10MB allowed.");
+      return;
+    }
+
     setLoading(true);
     setCaption("");
-    setMessage("");
+    setMessage("Uploading and generating caption...");
 
     const formData = new FormData();
     formData.append("file", file);
@@ -66,14 +73,15 @@ export default function SamplePage() {
 
       const result = await res.json();
 
-      if (result.success) {
+      if (res.ok && result.success) {
         setCaption(result.caption);
-        setMessage("Upload and caption generation successful!");
+        setMessage("✅ Upload and caption generation successful!");
       } else {
-        setMessage(`Error: ${result.error}`);
+        setMessage(`❌ Error: ${result.error || "Unknown error occurred"}`);
       }
-    } catch {
-      setMessage("Upload failed. Please try again.");
+    } catch (err) {
+      console.error("Upload error:", err);
+      setMessage("❌ Upload failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -119,7 +127,15 @@ export default function SamplePage() {
         {loading ? "Analyzing image..." : "Upload & Analyze"}
       </button>
 
-      {message && <p className="mt-4 text-green-600">{message}</p>}
+      {message && (
+        <p
+          className={`mt-4 ${
+            message.startsWith("❌") ? "text-red-600" : "text-green-600"
+          }`}
+        >
+          {message}
+        </p>
+      )}
 
       {caption && (
         <div className="mt-6 p-4 border rounded bg-gray-50">

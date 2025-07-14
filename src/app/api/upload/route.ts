@@ -1,15 +1,12 @@
 import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { writeFile, unlink } from "fs/promises";
-import path from "path";
-import { randomUUID } from "crypto";
 
 const key = process.env.GEMINI_KEY;
 const genAI = new GoogleGenerativeAI(key || "");
 
 export const config = {
   api: {
-    bodyParser: false, // required to handle formData
+    bodyParser: false, // still required for formData
   },
 };
 
@@ -34,13 +31,7 @@ export async function POST(req: Request) {
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
-    const filename = `${randomUUID()}-${file.name}`;
-    const filePath = path.join(process.cwd(), "public/uploads", filename);
 
-    // Save file locally
-    await writeFile(filePath, buffer);
-
-    // Generate content with Gemini
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const result = await model.generateContent({
@@ -63,9 +54,6 @@ export async function POST(req: Request) {
     });
 
     const caption = result.response.text();
-
-    // Delete uploaded file after use
-    await unlink(filePath);
 
     return NextResponse.json({
       success: true,
