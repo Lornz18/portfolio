@@ -1,5 +1,6 @@
 // components/Header.tsx
 "use client";
+import Link from "next/link";
 import React, { useEffect } from "react";
 
 export default function Header() {
@@ -24,7 +25,9 @@ export default function Header() {
 
   return (
     <header className="text-[20px] text-secondary container flex items-center justify-between">
-      <h1>Audie.dev</h1>
+      <Link href="/" className="font-bold text-xl">
+        Audie.dev
+      </Link>
 
       <div className="">
         <div
@@ -46,10 +49,17 @@ export default function Header() {
               className="cursor-pointer hover:text-light transition-all transform-gpu"
               onClick={(e) => {
                 e.preventDefault();
-                document
-                  .getElementById("services")
-                  ?.scrollIntoView({ behavior: "smooth" });
-                toggleNav();
+                if (window.location.pathname === "/sample") {
+                  window.location.href = "/#services";
+                  // After navigation, the browser will scroll to the #contacts section.
+                  // No need to call scrollIntoView here since the anchor will handle it.
+                  // toggleNav() is not needed since the page reloads.
+                } else {
+                  document
+                    .getElementById("services")
+                    ?.scrollIntoView({ behavior: "smooth" });
+                  toggleNav();
+                }
               }}
             >
               Services
@@ -58,10 +68,17 @@ export default function Header() {
               className="cursor-pointer hover:text-light transition-all transform-gpu"
               onClick={(e) => {
                 e.preventDefault();
-                document
-                  .getElementById("projects")
-                  ?.scrollIntoView({ behavior: "smooth" });
-                toggleNav();
+                if (window.location.pathname === "/sample") {
+                  window.location.href = "/#projects";
+                  // After navigation, the browser will scroll to the #contacts section.
+                  // No need to call scrollIntoView here since the anchor will handle it.
+                  // toggleNav() is not needed since the page reloads.
+                } else {
+                  document
+                    .getElementById("projects")
+                    ?.scrollIntoView({ behavior: "smooth" });
+                  toggleNav();
+                }
               }}
             >
               Projects
@@ -69,19 +86,24 @@ export default function Header() {
             {/* <li className="cursor-pointer hover:text-light transition-all transform-gpu">
               Testimonials
             </li> */}
-            <li
-              className="cursor-pointer hover:text-light transition-all transform-gpu"
-            >
+            <li className="cursor-pointer hover:text-light transition-all transform-gpu">
               <a href="/sample">Sample Features</a>
             </li>
             <li
               className="cursor-pointer hover:text-light transition-all transform-gpu"
               onClick={(e) => {
                 e.preventDefault();
-                document
-                  .getElementById("contacts")
-                  ?.scrollIntoView({ behavior: "smooth" });
-                toggleNav();
+                if (window.location.pathname === "/sample") {
+                  window.location.href = "/#contacts";
+                  // After navigation, the browser will scroll to the #contacts section.
+                  // No need to call scrollIntoView here since the anchor will handle it.
+                  // toggleNav() is not needed since the page reloads.
+                } else {
+                  document
+                    .getElementById("contacts")
+                    ?.scrollIntoView({ behavior: "smooth" });
+                  toggleNav();
+                }
               }}
             >
               Contacts
