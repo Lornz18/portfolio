@@ -11,10 +11,12 @@ export default function Header() {
   };
 
   useEffect(() => {
-    if (navOpen) {
+    if (window.innerWidth < 1024) { // Only apply on small screens (less than 'lg')
+      if (navOpen) {
       document.body.style.overflow = "hidden"; // Disable scroll
-    } else {
+      } else {
       document.body.style.overflow = ""; // Reset to default
+      }
     }
 
     // Cleanup on unmount
@@ -55,10 +57,10 @@ export default function Header() {
                   // No need to call scrollIntoView here since the anchor will handle it.
                   // toggleNav() is not needed since the page reloads.
                 } else {
-                  document
+                    document
                     .getElementById("services")
                     ?.scrollIntoView({ behavior: "smooth" });
-                  toggleNav();
+                    toggleNav();
                 }
               }}
             >
