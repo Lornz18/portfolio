@@ -244,6 +244,32 @@ export default function Home() {
                   "Firebase Hosting",
                 ],
               },
+              {
+                image: "project 4.png",
+                name: "Online Clinic Appointment Website",
+                link: "https://dental-appt.vercel.app/",
+                description:
+                  "A fully responsive online clinic appointment website that allows patients to view and book appointments in real time. Built using HTML, CSS, JavaScript, and TailwindCSS, the site uses WebSockets to provide live updates for appointment availability and notifications. Hosted on Vercel for fast and reliable deployment, it features a clean UI and smooth responsiveness across all devices.",
+                feature: [
+                  "Responsive Design",
+                  "TailwindCSS Styling",
+                  "Real-Time Appointment Updates with WebSockets",
+                  "Live Notifications for Bookings",
+                ],
+              },
+              {
+                image: "project 5.png",
+                name: "Quizify",
+                link: "https://quizify-dev.vercel.app/",
+                description:
+                  "A fully responsive quiz platform that uses AI to generate questions based on user-provided notes. Built with HTML, CSS, JavaScript, and TailwindCSS, it offers real-time updates and a smooth interactive experience. Hosted on Vercel for fast and reliable deployment, Quizify combines clean UI with intelligent question generation to enhance learning.",
+                feature: [
+                  "Responsive Design",
+                  "TailwindCSS Styling",
+                  "AI-Powered Question Generation from Notes",
+                  "Real-Time Updates"
+                ],
+              },
             ].map((item, idx) => (
               <div key={item.image} data-aos="fade-up">
                 <a
