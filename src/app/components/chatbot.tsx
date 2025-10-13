@@ -86,7 +86,7 @@ export default function ChatWindow({ onClose, isclose }: ChatWindowProps) {
 
   return (
     <div
-      className={`fixed bottom-20 right-6 w-[calc(100%-3rem)] max-w-md h-[70vh] max-h-[600px] bg-white dark:bg-gray-800 rounded-xl shadow-2xl flex flex-col overflow-hidden border border-gray-200 dark:border-gray-700  transition-all duration-300 ${
+      className={`fixed bottom-20 right-6 w-[calc(100%-3rem)] max-w-md h-[70vh] max-h-[600px] bg-gray-800 rounded-xl shadow-2xl flex flex-col overflow-hidden border border-gray-200 dark:border-gray-700  transition-all duration-300 ${
         isclose ? "opacity-100" : "opacity-0"
       }`}
     >
@@ -114,11 +114,11 @@ export default function ChatWindow({ onClose, isclose }: ChatWindowProps) {
         {/* Typing Indicator Bubble */}
         {isWaiting && (
           <div className="flex items-end space-x-2 justify-start">
-            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center">
-              <Bot size={20} className="text-gray-600 dark:text-gray-300 animate-pulse" />
+            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center">
+              <Bot size={20} className="text-gray-300 animate-pulse" />
             </div>
             <div
-              className="max-w-xs md:max-w-md lg:max-w-lg px-4 py-2 rounded-xl shadow bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-bl-none"
+              className="max-w-xs md:max-w-md lg:max-w-lg px-4 py-2 rounded-xl shadow bg-gray-700 text-gray-200 rounded-bl-none"
               aria-live="polite"
             >
               <p className="text-sm italic animate-pulse">Audie.bot is typing...</p>
@@ -132,7 +132,7 @@ export default function ChatWindow({ onClose, isclose }: ChatWindowProps) {
       {/* Input Area */}
       <form
         onSubmit={handleSendMessage}
-        className="border-t border-gray-200 dark:border-gray-700 p-3 bg-gray-50 dark:bg-gray-750"
+        className="border-t border-gray-700 p-3 bg-gray-750"
       >
         <div className="flex items-center space-x-2">
           <input

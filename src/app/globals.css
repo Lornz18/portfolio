@@ -86,3 +86,13 @@ body {
   background-color: #6b7280; /* gray-500 */
 }
 
+/* styles/globals.css */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+
