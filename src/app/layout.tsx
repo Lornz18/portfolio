@@ -54,9 +54,9 @@ export default function RootLayout({
         />
       </head>
       <body className={spaceGrotesk.className}>
-        {/* <Header></Header> */}
+        <Header></Header>
         {children}
-        {/* <Footer></Footer> */}
+        <Footer></Footer>
       </body>
     </html>
   );

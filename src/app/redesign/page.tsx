@@ -1,4 +1,4 @@
-/* import React from "react";
+import React from "react";
 import Carousel from "../components/carousel";
 
 const page = () => {
@@ -32,4 +32,3 @@ const page = () => {
 };
 
 export default page;
- */
