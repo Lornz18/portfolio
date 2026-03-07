@@ -72,9 +72,6 @@ export default function Header() {
                 e.preventDefault();
                 if (window.location.pathname === "/sample") {
                   window.location.href = "/#projects";
-                  // After navigation, the browser will scroll to the #contacts section.
-                  // No need to call scrollIntoView here since the anchor will handle it.
-                  // toggleNav() is not needed since the page reloads.
                 } else {
                   document
                     .getElementById("projects")
