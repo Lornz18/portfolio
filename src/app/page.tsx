@@ -160,9 +160,8 @@ export default function Home() {
                       </h2>
                     </div>
                     <XMarkIcon
-                      className={`w-6 h-6 text-light transition-all duration-800 ${
-                        openDropdown === index ? "" : "rotate-45"
-                      }`}
+                      className={`w-6 h-6 text-light transition-all duration-800 ${openDropdown === index ? "" : "rotate-45"
+                        }`}
                     />
                   </div>
 
@@ -194,15 +193,68 @@ export default function Home() {
             data-aos="fade-up"
           >
             <span className="b-title">Projects</span>
-            <h1 className="text-[32px]">Get inspired by my work</h1>
+            <h1 className="text-[32px]">Featured Work & Experience</h1>
             <p className="text-[16px] text-secondary">
-              Some of the work I&apos;ve built — from concept to clean,
-              responsive interfaces.
+              A collection of professional platforms and independent projects built from concept to deployment.
             </p>
           </div>
 
           <div className="space-y-12">
             {[
+              {
+                image: "agentiumlabs.png",
+                name: "AgentiumLabs Website",
+                link: "https://agentiumlabs.ai/",
+                feature: [
+                  "React / Next.js",
+                  "TypeScript",
+                  "Responsive Web Design",
+                  "CI/CD",
+                  "DigitalOcean",
+                ],
+                isProfessional: true,
+                description: `The official website for AgentiumLabs, showcasing the company’s AI platform focused on building agentic AI systems, automation infrastructure, and enterprise AI solutions.\n\nKey Contributions:\n• Developed and maintained frontend components for the company website.\n• Implemented responsive UI to ensure compatibility across devices.\n• Optimized layout structure and performance for improved user experience.\n• Assisted with deployment workflows and infrastructure setup.`,
+              },
+              {
+                image: "ricerca.png",
+                name: "Ricerca AI Research Platform",
+                link: "https://ricerca.agentiumlabs.ai/",
+                feature: [
+                  "React / Next.js",
+                  "API Integration",
+                  "PostgreSQL",
+                  "CI/CD",
+                  "Cloud Infrastructure",
+                ],
+                isProfessional: true,
+                description: `Ricerca is an AI-powered research discovery platform designed to help users explore and discover machine learning research papers through an aggregated interface.\n\nKey Contributions:\n• Developed and improved frontend features for browsing research papers.\n• Implemented UI components for research listings and search results.\n• Integrated APIs and backend services to retrieve research data.\n• Improved responsiveness and usability of the platform.`,
+              },
+              {
+                image: "project 4.png",
+                name: "Online Clinic Appointment Website",
+                link: "https://dental-appt.vercel.app/",
+                description:
+                  "A fully responsive online clinic appointment website that allows patients to view and book appointments in real time. Built using HTML, CSS, JavaScript, and TailwindCSS, the site uses WebSockets to provide live updates for appointment availability and notifications. Hosted on Vercel for fast and reliable deployment, it features a clean UI and smooth responsiveness across all devices.",
+                feature: [
+                  "Responsive Design",
+                  "TailwindCSS Styling",
+                  "Real-Time Appointment Updates with WebSockets",
+                  "Live Notifications for Bookings",
+                ],
+              },
+              {
+                image: "project 5.png",
+                name: "Quizify",
+                link: "https://quizify-dev.vercel.app/",
+                description:
+                  "A fully responsive quiz platform that uses AI to generate questions based on user-provided notes. Built with HTML, CSS, JavaScript, and TailwindCSS, it offers real-time updates and a smooth interactive experience. Hosted on Vercel for fast and reliable deployment, Quizify combines clean UI with intelligent question generation to enhance learning.",
+                feature: [
+                  "Responsive Design",
+                  "TailwindCSS Styling",
+                  "AI-Powered Question Generation from Notes",
+                  "Real-Time Updates"
+                ],
+              },
               {
                 image: "project 1.png",
                 name: "BidsnBuys",
@@ -211,10 +263,9 @@ export default function Home() {
                   "AI",
                   "E-commerce",
                   "Automation",
-                  "Marketing",
-                  "Smartlisting",
                 ],
-                description: `BidsnBuys.com is a soon-to-launch e-commerce platform designed to automate marketing across platforms like Facebook and Google. It features AI-powered tools that can generate product listings directly from images. The site aims to make online selling faster, smarter, and more efficient for all users.`,
+                isServerlessSecure: true,
+                description: `BidsnBuys.com is a professional e-commerce platform designed to automate marketing across platforms like Facebook and Google. Built on a serverless and secure architecture, it features AI-powered tools that generate product listings directly from images, making online selling faster and smarter.`,
               },
               {
                 image: "project 2.png",
@@ -244,72 +295,64 @@ export default function Home() {
                   "Firebase Hosting",
                 ],
               },
-              {
-                image: "project 4.png",
-                name: "Online Clinic Appointment Website",
-                link: "https://dental-appt.vercel.app/",
-                description:
-                  "A fully responsive online clinic appointment website that allows patients to view and book appointments in real time. Built using HTML, CSS, JavaScript, and TailwindCSS, the site uses WebSockets to provide live updates for appointment availability and notifications. Hosted on Vercel for fast and reliable deployment, it features a clean UI and smooth responsiveness across all devices.",
-                feature: [
-                  "Responsive Design",
-                  "TailwindCSS Styling",
-                  "Real-Time Appointment Updates with WebSockets",
-                  "Live Notifications for Bookings",
-                ],
-              },
-              {
-                image: "project 5.png",
-                name: "Quizify",
-                link: "https://quizify-dev.vercel.app/",
-                description:
-                  "A fully responsive quiz platform that uses AI to generate questions based on user-provided notes. Built with HTML, CSS, JavaScript, and TailwindCSS, it offers real-time updates and a smooth interactive experience. Hosted on Vercel for fast and reliable deployment, Quizify combines clean UI with intelligent question generation to enhance learning.",
-                feature: [
-                  "Responsive Design",
-                  "TailwindCSS Styling",
-                  "AI-Powered Question Generation from Notes",
-                  "Real-Time Updates"
-                ],
-              },
             ].map((item, idx) => (
-              <div key={item.image} data-aos="fade-up">
-                <a
-                  href={item.link} // <-- Add a `link` property to your item object
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <div className="bg-light text-primary rounded-xl shadow-md hover:scale-[1.02] transition-transform duration-300 p-4 md:p-8">
-                    <div className="flex flex-col lg:flex-row lg:items-start gap-6 lg:gap-12">
-                      <div className="w-full lg:w-[45%] h-60 md:h-80 rounded-xl shadow-2xl overflow-hidden mb-4 lg:mb-0">
-                        <Image
-                          src={`/${item.image}`}
-                          alt={item.image}
-                          width={1000}
-                          height={1000}
-                          className="w-full h-full object-cover object-top"
-                          priority={idx === 0}
-                        />
-                      </div>
-                      <div className="w-full lg:w-[55%] flex flex-col justify-between">
-                        <h2 className="text-xl md:text-2xl font-semibold mb-2">
-                          {item.name}
-                        </h2>
-                        <p className="text-secondary whitespace-pre-line mb-4">
-                          {item.description}
-                        </p>
-                        <div className="flex flex-wrap items-center gap-2">
-                          {item.feature?.map((feature, key) => (
-                            <span
-                              key={key}
-                              className="py-2 px-4 md:px-5 bg-primary text-light rounded-2xl text-xs md:text-sm break-words"
-                            >
-                              {feature}
+              <div key={item.name} data-aos="fade-up">
+                <div className="bg-light text-primary rounded-xl shadow-md p-4 md:p-8 hover:scale-[1.01] transition-transform duration-300">
+                  <div className="flex flex-col lg:flex-row lg:items-start gap-6 lg:gap-12">
+                    <div className="w-full lg:w-[45%] h-60 md:h-80 rounded-xl shadow-2xl overflow-hidden mb-4 lg:mb-0 border border-secondary/10">
+                      <Image
+                        src={`/${item.image}`}
+                        alt={item.name}
+                        width={1000}
+                        height={1000}
+                        className="w-full h-full object-cover object-top"
+                        priority={idx === 0}
+                      />
+                    </div>
+                    <div className="w-full lg:w-[55%] flex flex-col justify-between">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2 flex-wrap mb-1">
+                          <h2 className="text-xl md:text-2xl font-semibold">
+                            {item.name}
+                          </h2>
+                          {item.isProfessional && (
+                            <span className="bg-blue-600/10 text-blue-600 text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wider">
+                              AgentiumLabs
                             </span>
-                          ))}
+                          )}
+                          {item.isServerlessSecure && (
+                            <span className="bg-indigo-600/10 text-indigo-600 text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wider">
+                              Serverless Secure
+                            </span>
+                          )}
                         </div>
+                        <div className="flex gap-2">
+                          <a
+                            href={item.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs font-medium px-3 py-1 bg-primary/10 rounded-full hover:bg-primary/20 transition-colors"
+                          >
+                            Live Site
+                          </a>
+                        </div>
+                      </div>
+                      <p className="text-secondary whitespace-pre-line mb-4 text-sm md:text-base">
+                        {item.description}
+                      </p>
+                      <div className="flex flex-wrap items-center gap-2 mt-auto">
+                        {item.feature?.map((feature, key) => (
+                          <span
+                            key={key}
+                            className="py-1.5 px-3 md:px-4 bg-primary text-light rounded-2xl text-[10px] md:text-xs font-medium"
+                          >
+                            {feature}
+                          </span>
+                        ))}
                       </div>
                     </div>
                   </div>
-                </a>
+                </div>
               </div>
             ))}
           </div>
