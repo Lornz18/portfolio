@@ -82,9 +82,22 @@ export default function Header() {
             >
               Projects
             </li>
-            {/* <li className="cursor-pointer hover:text-light transition-all transform-gpu">
+            <li
+              className="cursor-pointer hover:text-light transition-all transform-gpu"
+              onClick={(e) => {
+                e.preventDefault();
+                if (window.location.pathname === "/sample") {
+                  window.location.href = "/#testimonials";
+                } else {
+                  document
+                    .getElementById("testimonials")
+                    ?.scrollIntoView({ behavior: "smooth" });
+                  toggleNav();
+                }
+              }}
+            >
               Testimonials
-            </li> */}
+            </li>
             <li className="cursor-pointer hover:text-light transition-all transform-gpu">
               <a href="/sample">Sample Features</a>
             </li>

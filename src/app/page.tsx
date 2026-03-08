@@ -10,7 +10,8 @@ import {
   Gauge,
   Accessibility,
   Briefcase,
-  MessageCircle, // Added for the chat open button
+  MessageCircle,
+  Quote, // Added for the testimonial section
 } from "lucide-react";
 import Chatbot from "./components/chatbot"; // Assuming your Chatbot component file is named chatbot.tsx (lowercase)
 
@@ -359,8 +360,46 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Testimonials Section (commented out as in original) */}
-      {/* <div className="bg-light py-8"> ... </div> */}
+      <div className="my-[10rem]" id="testimonials">
+        <div
+          className="text-center flex flex-col items-center mb-[3.5rem]"
+          data-aos="fade-up"
+        >
+          <span className="b-title">Testimonials</span>
+          <h1 className="text-[32px]">Kind Words</h1>
+          <p className="text-[16px] text-secondary max-w-md">
+            Feedback from people I&apos;ve worked with on various projects.
+          </p>
+        </div>
+
+        <div className="max-w-2xl mx-auto px-4" data-aos="zoom-in">
+          <div className="relative p-[1px] rounded-2xl bg-gradient-to-br from-primary/20 via-primary/5 to-transparent">
+            <div className="bg-white rounded-[calc(1rem-1px)] p-6 md:p-10 shadow-sm relative overflow-hidden border border-gray-100/50">
+              <Quote className="absolute top-4 right-4 text-primary/10 w-12 h-12" />
+              <div className="relative z-10">
+                <p className="text-secondary text-sm md:text-[15px] leading-relaxed mb-6 font-medium">
+                  &quot;Audie has been one of the founding developers on our team and played a key role in helping us bring our technical vision to life. From the early stages of development, he was instrumental in building our core products. This includes the website infrastructure and the AI agentic platform that were developed from the ground up and turned into working solutions.
+                  <br /><br />
+                  Throughout the time we worked together, Audie consistently demonstrated strong technical ability, initiative, and speed in execution. He has the ability to quickly understand complex technical requirements and translate them into practical implementations. One of the qualities that stood out the most was his ability to deliver outputs efficiently while maintaining reliability in his work.
+                  <br /><br />
+                  Beyond technical implementation, Audie also showed ownership of the projects he handled. Building products from zero to one requires both technical depth and adaptability, and he handled those challenges well while contributing meaningfully to the team’s progress.
+                  <br /><br />
+                  His knowledge, work ethic, and ability to execute make him a valuable member of any development team. I strongly recommend him to organizations that are looking for a developer who can contribute quickly, take initiative, and help build products from the ground up.&quot;
+                </p>
+                <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
+                  <div className="w-10 h-10 bg-gradient-to-tr from-primary to-blue-400 rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-md">
+                    AO
+                  </div>
+                  <div>
+                    <h4 className="text-primary font-bold text-base leading-tight">Armielyn Obinguar</h4>
+                    <p className="text-secondary text-xs font-medium">AgentiumLabs</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div className="container py-12 px-4 mx-auto" id="contacts">
         <div className="grid md:grid-cols-2 gap-12 items-start py-8">
