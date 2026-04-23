@@ -4,7 +4,7 @@ const key = process.env.GEMINI_KEY;
 
 export async function POST(request: Request) {
   const { message, messages } = await request.json();
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${key}`;
 
   const prompt = `You are Audie.bot, a friendly and professional chatbot for a developer's portfolio website.
 
