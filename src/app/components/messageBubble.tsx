@@ -1,11 +1,11 @@
 // components/MessageBubble.tsx
-import { Bot, User } from 'lucide-react'; // Optional: for avatars
+import { Bot, User } from "lucide-react";
 
 export interface Message {
   id: string | number;
   text: string;
-  sender: 'user' | 'bot';
-  timestamp?: string; // Optional
+  sender: "user" | "bot";
+  timestamp?: string;
 }
 
 interface MessageBubbleProps {
@@ -13,32 +13,42 @@ interface MessageBubbleProps {
 }
 
 export default function MessageBubble({ message }: MessageBubbleProps) {
-  const isUser = message.sender === 'user';
+  const isUser = message.sender === "user";
 
   return (
-    <div className={`flex items-end space-x-2 ${isUser ? 'justify-end' : 'justify-start'}`}>
+    <div
+      className={`flex items-end gap-2 ${
+        isUser ? "justify-end" : "justify-start"
+      }`}
+    >
       {!isUser && (
-        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center">
-          <Bot size={20} className="text-gray-600 dark:text-gray-300" />
+        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-tr from-sky-400 to-blue-500 flex items-center justify-center">
+          <Bot size={18} className="text-white" />
         </div>
       )}
       <div
-        className={`max-w-xs md:max-w-md lg:max-w-lg px-4 py-2 rounded-xl shadow
-                    ${isUser
-                      ? 'bg-blue-600 text-white rounded-br-none'
-                      : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-bl-none'
-                    }`}
+        className={`max-w-[75%] px-4 py-2.5 ${
+          isUser
+            ? "bg-gradient-to-r from-sky-600 to-blue-600 text-white rounded-2xl rounded-br-md shadow-lg shadow-blue-500/20"
+            : "bg-white/5 border border-white/10 text-light rounded-2xl rounded-bl-md"
+        }`}
       >
-        <p className="text-sm">{message.text}</p>
+        <p className="text-sm leading-relaxed whitespace-pre-line">
+          {message.text}
+        </p>
         {message.timestamp && (
-          <p className={`text-xs mt-1 ${isUser ? 'text-blue-200' : 'text-gray-500 dark:text-gray-400'} text-right`}>
+          <p
+            className={`text-[10px] mt-1 text-right ${
+              isUser ? "text-white/60" : "text-secondary/70"
+            }`}
+          >
             {message.timestamp}
           </p>
         )}
       </div>
       {isUser && (
-        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center">
-          <User size={20} className="text-white" />
+        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-white/10 border border-white/10 flex items-center justify-center">
+          <User size={16} className="text-light" />
         </div>
       )}
     </div>

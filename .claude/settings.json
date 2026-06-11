@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(npm install three)",
+      "PowerShell(npm install -D @types/three)",
+      "PowerShell(npm run build)",
+      "PowerShell(Remove-Item -Recurse -Force .next -Confirm:$false)",
+      "PowerShell(npx tsc --noEmit)"
+    ]
+  }
+}

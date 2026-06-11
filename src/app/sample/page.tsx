@@ -1,8 +1,15 @@
 "use client";
-import { MessageCircle } from "lucide-react";
+import {
+  MessageCircle,
+  UploadCloud,
+  ImageIcon,
+  Sparkles,
+  ScanSearch,
+} from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import Chatbot from "../components/chatbot";
+import Reveal from "../components/reveal";
 
 export default function SamplePage() {
   const [file, setFile] = useState<File | null>(null);
@@ -10,39 +17,40 @@ export default function SamplePage() {
   const [caption, setCaption] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [isDragging, setIsDragging] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
-  // --- Start of Chatbot State and Handlers ---
-  const [isChatOpen, setIsChatOpen] = useState(false); // State to control chat visibility
+  const processFile = (selectedFile: File | null) => {
+    if (!selectedFile) return;
 
-  const handleOpenChat = () => {
-    setIsChatOpen(true);
+    const maxSizeInBytes = 5 * 1024 * 1024; // 5MB
+
+    if (selectedFile.size > maxSizeInBytes) {
+      setMessage("❌ File is too large. Max size is 10MB.");
+      setFile(null);
+      setPreview(null);
+      setCaption("");
+      return;
+    }
+
+    setFile(selectedFile);
+    setPreview(URL.createObjectURL(selectedFile));
+    setCaption("");
+    setMessage("");
   };
-
-  const handleCloseChat = () => {
-    setIsChatOpen(false);
-    // You can add other logic here if needed, e.g., logging
-    console.log("Chatbot closed by user.");
-  };
-  // --- End of Chatbot State and Handlers ---
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0] || null;
+    processFile(e.target.files?.[0] || null);
+  };
 
-    if (selectedFile) {
-      const maxSizeInBytes = 5 * 1024 * 1024; // 5MB
-
-      if (selectedFile.size > maxSizeInBytes) {
-        setMessage("❌ File is too large. Max size is 10MB.");
-        setFile(null);
-        setPreview(null);
-        setCaption(""); // clear previous caption
-        return;
-      }
-
-      setFile(selectedFile);
-      setPreview(URL.createObjectURL(selectedFile));
-      setCaption("");
-      setMessage(""); // clear any previous message
+  const handleDrop = (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const dropped = e.dataTransfer.files?.[0] || null;
+    if (dropped && dropped.type.startsWith("image/")) {
+      processFile(dropped);
+    } else if (dropped) {
+      setMessage("❌ Please drop an image file.");
     }
   };
 
@@ -52,7 +60,6 @@ export default function SamplePage() {
       return;
     }
 
-    // Check file size client-side (optional, mirrors server check)
     if (file.size > 10 * 1024 * 1024) {
       setMessage("File too large. Max 10MB allowed.");
       return;
@@ -88,75 +95,151 @@ export default function SamplePage() {
   };
 
   return (
-    <div className="container p-4">
-      <h1 className="text-2xl font-bold mb-4">AI Image Description</h1>
-      <p className="mb-4">
-        Upload an image to get a detailed description powered by Gemini AI.
-        <br />
-        <span className="text-sm text-gray-500">
-          (I have used this feature on the bidsnbuys project.)
-        </span>
-      </p>
+    <div className="relative min-h-screen overflow-hidden">
+      {/* Background layers */}
+      <div className="absolute inset-0 bg-grid" />
+      <div className="absolute top-[-8rem] right-[-8rem] w-[28rem] h-[28rem] bg-blue-600/20 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute bottom-[-8rem] left-[-8rem] w-[28rem] h-[28rem] bg-sky-500/15 rounded-full blur-[140px] pointer-events-none" />
 
-      <div className="rounded border border-gray-300 w-fit p-3 cursor-pointer">
-        <input
-          type="file"
-          onChange={handleFileChange}
-          accept="image/*"
-          className="cursor-pointer"
-        />
+      <div className="container relative pt-32 pb-24">
+        {/* Page header */}
+        <Reveal className="text-center flex flex-col items-center gap-4 mb-12">
+          <span className="section-badge">AI Lab</span>
+          <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
+            AI Image <span className="text-gradient">Description</span>
+          </h1>
+          <p className="text-secondary max-w-xl">
+            Upload an image and get a detailed description powered by Gemini
+            AI.
+            <br />
+            <span className="text-sm text-secondary/70">
+              (This feature is used in production on the BidsnBuys project.)
+            </span>
+          </p>
+        </Reveal>
+
+        <div className="max-w-2xl mx-auto space-y-6">
+          {/* Upload dropzone */}
+          <Reveal delay={100}>
+            <label
+              onDragOver={(e) => {
+                e.preventDefault();
+                setIsDragging(true);
+              }}
+              onDragLeave={() => setIsDragging(false)}
+              onDrop={handleDrop}
+              className={`glass glass-hover rounded-3xl p-10 flex flex-col items-center justify-center gap-4 text-center cursor-pointer transition-all duration-300 ${
+                isDragging
+                  ? "border-sky-400/60 bg-sky-400/5 shadow-[0_0_40px_-8px_rgba(34,211,238,0.4)]"
+                  : ""
+              }`}
+            >
+              <input
+                type="file"
+                onChange={handleFileChange}
+                accept="image/*"
+                className="hidden"
+              />
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-sky-500/20 to-blue-500/20 border border-white/10 flex items-center justify-center">
+                <UploadCloud size={28} className="text-sky-300" />
+              </div>
+              <div>
+                <p className="font-semibold text-light">
+                  {file ? file.name : "Click to upload or drag & drop"}
+                </p>
+                <p className="text-secondary text-sm mt-1">
+                  PNG, JPG or WEBP · Max 5MB
+                </p>
+              </div>
+            </label>
+          </Reveal>
+
+          {/* Preview */}
+          {preview && (
+            <div className="glass rounded-3xl p-4">
+              <div className="flex items-center gap-2 text-secondary text-sm mb-3 px-1">
+                <ImageIcon size={16} className="text-blue-300" />
+                Preview
+              </div>
+              <div className="relative rounded-2xl overflow-hidden border border-white/10">
+                <Image
+                  src={preview}
+                  alt="Preview"
+                  width={800}
+                  height={600}
+                  className="w-full max-h-[24rem] object-contain bg-black/30"
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Analyze button */}
+          <button
+            onClick={handleUpload}
+            disabled={loading || !file}
+            className="btn-gradient w-full disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none"
+          >
+            {loading ? (
+              <>
+                <ScanSearch size={18} className="animate-pulse" />
+                Analyzing image...
+              </>
+            ) : (
+              <>
+                <Sparkles size={18} />
+                Upload & Analyze
+              </>
+            )}
+          </button>
+
+          {/* Status message */}
+          {message && (
+            <p
+              className={`text-center text-sm font-medium ${
+                message.startsWith("❌")
+                  ? "text-red-400"
+                  : message.startsWith("✅")
+                  ? "text-sky-400"
+                  : "text-secondary animate-pulse"
+              }`}
+            >
+              {message}
+            </p>
+          )}
+
+          {/* AI result */}
+          {caption && (
+            <div className="relative p-[1px] rounded-3xl bg-gradient-to-br from-sky-400/40 via-blue-500/30 to-transparent">
+              <div className="bg-[#0a0a0d] rounded-[calc(1.5rem-1px)] p-7 md:p-8">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-400 to-blue-500 flex items-center justify-center">
+                    <Sparkles size={18} className="text-white" />
+                  </div>
+                  <h2 className="text-lg font-bold">AI Description</h2>
+                </div>
+                <p className="text-secondary text-sm md:text-[15px] leading-relaxed whitespace-pre-line">
+                  {caption}
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
-      {preview && (
-        <Image
-          src={preview}
-          alt="Preview"
-          width={256}
-          height={256}
-          className="mt-4 rounded shadow border border-gray-300"
-        />
-      )}
-
-      <button
-        onClick={handleUpload}
-        disabled={loading}
-        className={`mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 ${
-          loading ? "opacity-50 cursor-not-allowed" : ""
-        }`}
-      >
-        {loading ? "Analyzing image..." : "Upload & Analyze"}
-      </button>
-
-      {message && (
-        <p
-          className={`mt-4 ${
-            message.startsWith("❌") ? "text-red-600" : "text-green-600"
-          }`}
-        >
-          {message}
-        </p>
-      )}
-
-      {caption && (
-        <div className="mt-6 p-4 border rounded bg-gray-50">
-          <h2 className="text-lg font-semibold mb-2">AI Description:</h2>
-          <p className="text-gray-800 whitespace-pre-line">{caption}</p>
-        </div>
-      )}
-
-      {/* Button to open the Chatbot */}
+      {/* Chatbot */}
       {!isChatOpen && (
         <button
-          onClick={handleOpenChat}
-          className="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-xl transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 z-50"
+          onClick={() => setIsChatOpen(true)}
+          className="fixed bottom-6 right-6 bg-gradient-to-r from-sky-500 to-blue-600 text-white p-4 rounded-full shadow-xl shadow-blue-500/30 transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-400 z-50"
           aria-label="Open chat"
         >
           <MessageCircle size={24} />
         </button>
       )}
 
-      {/* Conditionally render the Chatbot */}
-      {isChatOpen && <Chatbot onClose={handleCloseChat} isclose={isChatOpen} />}
+      {isChatOpen && (
+        <Chatbot onClose={() => setIsChatOpen(false)} isclose={isChatOpen} />
+      )}
     </div>
   );
 }

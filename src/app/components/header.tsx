@@ -1,127 +1,125 @@
-// components/Header.tsx
 "use client";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Menu, X } from "lucide-react";
+
+const navItems = [
+  { label: "Services", id: "services" },
+  { label: "Projects", id: "projects" },
+  { label: "Testimonials", id: "testimonials" },
+  { label: "Contact", id: "contacts" },
+];
 
 export default function Header() {
-  const [navOpen, setNavOpen] = React.useState(false);
-
-  const toggleNav = () => {
-    setNavOpen((prev) => !prev);
-  };
+  const [navOpen, setNavOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    if (window.innerWidth < 1024) { // Only apply on small screens (less than 'lg')
-      if (navOpen) {
-      document.body.style.overflow = "hidden"; // Disable scroll
-      } else {
-      document.body.style.overflow = ""; // Reset to default
-      }
-    }
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-    // Cleanup on unmount
+  useEffect(() => {
+    document.body.style.overflow = navOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
   }, [navOpen]);
 
-  return (
-    <header className="text-[20px] text-secondary container flex items-center justify-between">
-      <Link href="/" className="font-bold text-xl">
-        Audie.dev
-      </Link>
+  const goTo = (id: string) => {
+    setNavOpen(false);
+    if (window.location.pathname !== "/") {
+      window.location.href = `/#${id}`;
+      return;
+    }
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
 
-      <div className="">
-        <div
-          className="nav flex flex-col lg:flex-row items-center gap-[.5rem] justify-center lg:hidden "
-          onClick={toggleNav}
+  return (
+    <header className="fixed top-0 left-0 right-0 z-50 pointer-events-none">
+      <div
+        className={`container flex items-center justify-between pointer-events-auto transition-all duration-500 ${
+          scrolled ? "py-3" : "py-5"
+        }`}
+      >
+        <Link
+          href="/"
+          className="font-bold text-xl tracking-tight"
+          onClick={() => setNavOpen(false)}
         >
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-        <div
-          className={`absolute top-[5rem] w-full h-full
-          bg-white/30 backdrop-blur-md backdrop-brightness-110 z-[999]
-          transition-all duration-300 shadow-lg text-light lg:text-secondary lg:relative lg:left-0 lg:bg-primary lg:top-0 lg:h-full lg:p-0 lg:shadow-none
-          ${navOpen ? "left-0" : "-left-full"}`}
+          audie<span className="text-gradient">.dev</span>
+        </Link>
+
+        {/* Desktop nav */}
+        <nav
+          className={`hidden lg:flex items-center gap-1 rounded-full px-2 py-1.5 transition-all duration-500 ${
+            scrolled ? "glass shadow-lg shadow-black/40" : ""
+          }`}
         >
-          <ul className="border-b-2 border-primary p-5 flex flex-col lg:flex-row items-center justify-between gap-8">
-            <li
-              className="cursor-pointer hover:text-light transition-all transform-gpu"
-              onClick={(e) => {
-                e.preventDefault();
-                if (window.location.pathname === "/sample") {
-                  window.location.href = "/#services";
-                  // After navigation, the browser will scroll to the #contacts section.
-                  // No need to call scrollIntoView here since the anchor will handle it.
-                  // toggleNav() is not needed since the page reloads.
-                } else {
-                    document
-                    .getElementById("services")
-                    ?.scrollIntoView({ behavior: "smooth" });
-                    toggleNav();
-                }
-              }}
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => goTo(item.id)}
+              className="cursor-pointer px-4 py-1.5 rounded-full text-sm text-secondary hover:text-light hover:bg-white/5 transition-all duration-300"
             >
-              Services
-            </li>
-            <li
-              className="cursor-pointer hover:text-light transition-all transform-gpu"
-              onClick={(e) => {
-                e.preventDefault();
-                if (window.location.pathname === "/sample") {
-                  window.location.href = "/#projects";
-                } else {
-                  document
-                    .getElementById("projects")
-                    ?.scrollIntoView({ behavior: "smooth" });
-                  toggleNav();
-                }
-              }}
+              {item.label}
+            </button>
+          ))}
+          <a
+            href="/sample"
+            className="px-4 py-1.5 rounded-full text-sm text-secondary hover:text-light hover:bg-white/5 transition-all duration-300"
+          >
+            Sample Features
+          </a>
+          <button
+            onClick={() => goTo("contacts")}
+            className="cursor-pointer ml-2 px-5 py-1.5 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-sky-500 to-blue-500 hover:opacity-90 transition-opacity"
+          >
+            Hire Me
+          </button>
+        </nav>
+
+        {/* Mobile toggle */}
+        <button
+          onClick={() => setNavOpen((p) => !p)}
+          className="lg:hidden glass rounded-full p-2.5 text-light"
+          aria-label={navOpen ? "Close menu" : "Open menu"}
+        >
+          {navOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
+      </div>
+
+      {/* Mobile menu */}
+      <div
+        className={`lg:hidden fixed inset-0 -z-10 bg-primary/90 backdrop-blur-2xl transition-all duration-500 pointer-events-auto ${
+          navOpen ? "opacity-100 visible" : "opacity-0 invisible"
+        }`}
+      >
+        <nav className="h-full flex flex-col items-center justify-center gap-2">
+          {navItems.map((item, i) => (
+            <button
+              key={item.id}
+              onClick={() => goTo(item.id)}
+              className={`text-3xl font-semibold text-secondary hover:text-light py-3 transition-all duration-500 ${
+                navOpen ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
+              }`}
+              style={{ transitionDelay: navOpen ? `${i * 75}ms` : "0ms" }}
             >
-              Projects
-            </li>
-            <li
-              className="cursor-pointer hover:text-light transition-all transform-gpu"
-              onClick={(e) => {
-                e.preventDefault();
-                if (window.location.pathname === "/sample") {
-                  window.location.href = "/#testimonials";
-                } else {
-                  document
-                    .getElementById("testimonials")
-                    ?.scrollIntoView({ behavior: "smooth" });
-                  toggleNav();
-                }
-              }}
-            >
-              Testimonials
-            </li>
-            <li className="cursor-pointer hover:text-light transition-all transform-gpu">
-              <a href="/sample">Sample Features</a>
-            </li>
-            <li
-              className="cursor-pointer hover:text-light transition-all transform-gpu"
-              onClick={(e) => {
-                e.preventDefault();
-                if (window.location.pathname === "/sample") {
-                  window.location.href = "/#contacts";
-                  // After navigation, the browser will scroll to the #contacts section.
-                  // No need to call scrollIntoView here since the anchor will handle it.
-                  // toggleNav() is not needed since the page reloads.
-                } else {
-                  document
-                    .getElementById("contacts")
-                    ?.scrollIntoView({ behavior: "smooth" });
-                  toggleNav();
-                }
-              }}
-            >
-              Contacts
-            </li>
-          </ul>
-        </div>
+              {item.label}
+            </button>
+          ))}
+          <a
+            href="/sample"
+            className={`text-3xl font-semibold text-secondary hover:text-light py-3 transition-all duration-500 ${
+              navOpen ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
+            }`}
+            style={{ transitionDelay: navOpen ? `${navItems.length * 75}ms` : "0ms" }}
+          >
+            Sample Features
+          </a>
+        </nav>
       </div>
     </header>
   );
