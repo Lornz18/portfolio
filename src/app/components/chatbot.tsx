@@ -1,12 +1,12 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { SendHorizontal, Bot, X, Sparkles } from "lucide-react";
+import { ArrowUp, X } from "lucide-react";
 import MessageBubble, { Message } from "./messageBubble";
 
 interface ChatWindowProps {
+  open: boolean;
   onClose: () => void;
-  isclose: boolean;
 }
 
 const suggestions = [
@@ -15,30 +15,46 @@ const suggestions = [
   "How can I contact you?",
 ];
 
-export default function ChatWindow({ onClose, isclose }: ChatWindowProps) {
+export default function ChatWindow({ open, onClose }: ChatWindowProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [isWaiting, setIsWaiting] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const scrollToBottom = () => {
+  useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  }, [messages, isWaiting]);
 
-  useEffect(scrollToBottom, [messages, isWaiting]);
+  // Focus the input on open, and let Escape dismiss the panel.
+  useEffect(() => {
+    if (!open) return;
+    const t = setTimeout(() => inputRef.current?.focus(), 350);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      clearTimeout(t);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open, onClose]);
 
   const sendMessage = async (text: string) => {
     const userMessageText = text.trim();
     if (userMessageText === "" || isWaiting) return;
 
+    const stamp = () =>
+      new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+
     const userMessage: Message = {
       id: Date.now(),
       text: userMessageText,
       sender: "user",
-      timestamp: new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
+      timestamp: stamp(),
     };
 
     setMessages((prevMessages) => [...prevMessages, userMessage]);
@@ -60,10 +76,7 @@ export default function ChatWindow({ onClose, isclose }: ChatWindowProps) {
         id: Date.now() + 1,
         text: data.reply || "Sorry, I didn’t understand that.",
         sender: "bot",
-        timestamp: new Date().toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
+        timestamp: stamp(),
       };
 
       setMessages((prevMessages) => [...prevMessages, botMessage]);
@@ -74,10 +87,7 @@ export default function ChatWindow({ onClose, isclose }: ChatWindowProps) {
         id: Date.now() + 2,
         text: "There was an error connecting to the server. Please try again later.",
         sender: "bot",
-        timestamp: new Date().toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
+        timestamp: stamp(),
       };
 
       setMessages((prevMessages) => [...prevMessages, errorMessage]);
@@ -92,61 +102,70 @@ export default function ChatWindow({ onClose, isclose }: ChatWindowProps) {
   };
 
   return (
-    <div
-      className={`fixed bottom-20 right-6 w-[calc(100%-3rem)] max-w-md h-[70vh] max-h-[600px] bg-[#0a0a0d]/95 backdrop-blur-xl rounded-3xl shadow-2xl shadow-blue-500/20 flex flex-col overflow-hidden border border-white/10 transition-all duration-300 z-50 ${
-        isclose ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-      }`}
-    >
+    <>
+      {/* Softens the page behind the panel so it reads against the hero type */}
+      <div
+        aria-hidden
+        onClick={onClose}
+        className={`chat-backdrop ${
+          open ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
+      />
+
+      <div
+        role="dialog"
+        aria-label="Chat with Audie's AI assistant"
+        aria-hidden={!open}
+        className={`chat-panel flex flex-col overflow-hidden rounded-[20px] border border-line bg-surface transition-all duration-500 ${
+          open
+            ? "translate-y-0 opacity-100"
+            : "pointer-events-none -translate-y-8 opacity-0"
+        }`}
+      >
       {/* Header */}
-      <header className="relative p-4 flex items-center justify-between border-b border-white/10">
-        <div className="absolute inset-0 bg-gradient-to-r from-sky-500/10 to-blue-500/10 pointer-events-none" />
-        <div className="relative flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-sky-400 to-blue-500 flex items-center justify-center shadow-lg shadow-blue-500/30">
-            <Bot size={22} className="text-white" />
-          </div>
-          <div>
-            <h2 className="text-base font-bold text-light leading-tight">
-              Audie<span className="text-gradient">.bot</span>
-            </h2>
-            <p className="text-[11px] text-secondary flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-sky-400" />
-              AI Assistant · Online
-            </p>
-          </div>
+      <header className="flex flex-none items-center justify-between gap-4 border-b border-line px-5 py-4">
+        <div className="flex flex-col gap-1.5">
+          <p className="display text-base">audie.bot</p>
+          <p className="label-sm flex items-center gap-2">
+            <span className="dot" />
+            AI assistant · online
+          </p>
         </div>
         <button
           onClick={onClose}
-          className="relative w-9 h-9 rounded-full flex items-center justify-center text-secondary hover:text-light hover:bg-white/10 transition-all duration-300"
+          className="grid h-9 w-9 flex-none cursor-pointer place-items-center rounded-full border border-line text-muted transition-colors duration-300 hover:border-accent hover:text-accent"
           aria-label="Close chat"
         >
-          <X size={20} />
+          <X size={17} />
         </button>
       </header>
 
-      {/* Message List */}
-      <div className="flex-1 p-4 space-y-4 overflow-y-auto no-scrollbar">
-        {/* Empty state with suggestions */}
+      {/* Messages */}
+      <div className="no-scrollbar flex-1 space-y-4 overflow-y-auto p-5">
         {messages.length === 0 && !isWaiting && (
-          <div className="h-full flex flex-col items-center justify-center text-center gap-4 px-4">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-sky-500/20 to-blue-500/20 border border-white/10 flex items-center justify-center">
-              <Sparkles size={26} className="text-sky-300" />
-            </div>
-            <div>
-              <p className="text-light font-semibold">
-                Hi! I&apos;m Audie&apos;s AI assistant.
+          <div className="flex h-full flex-col justify-center gap-6">
+            <div className="flex flex-col gap-2">
+              <p className="text-[15px] text-foreground">
+                Hi — I&apos;m Audie&apos;s AI assistant.
               </p>
-              <p className="text-secondary text-sm mt-1">
-                Ask me anything about Audie&apos;s work, skills, or services.
+              <p className="text-sm leading-relaxed text-muted">
+                Ask me anything about his work, skills, or services.
               </p>
             </div>
-            <div className="flex flex-col gap-2 w-full mt-2">
-              {suggestions.map((s) => (
+
+            <div className="flex flex-col">
+              {suggestions.map((s, i) => (
                 <button
                   key={s}
                   onClick={() => sendMessage(s)}
-                  className="text-sm text-secondary hover:text-light bg-white/5 hover:bg-white/10 border border-white/10 hover:border-blue-400/40 rounded-full px-4 py-2.5 transition-all duration-300 cursor-pointer"
+                  className="group flex cursor-pointer items-baseline gap-3 border-t border-line py-3.5 text-left last:border-b"
                 >
-                  {s}
+                  <span className="label flex-none">
+                    ( {String(i + 1).padStart(2, "0")} )
+                  </span>
+                  <span className="text-sm text-muted transition-colors duration-300 group-hover:text-accent">
+                    {s}
+                  </span>
                 </button>
               ))}
             </div>
@@ -157,21 +176,18 @@ export default function ChatWindow({ onClose, isclose }: ChatWindowProps) {
           <MessageBubble key={msg.id} message={msg} />
         ))}
 
-        {/* Typing Indicator */}
+        {/* Typing indicator */}
         {isWaiting && (
-          <div className="flex items-end gap-2 justify-start">
-            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-tr from-sky-400 to-blue-500 flex items-center justify-center">
-              <Bot size={18} className="text-white" />
-            </div>
+          <div className="flex justify-start">
             <div
-              className="px-4 py-3 rounded-2xl rounded-bl-md bg-white/5 border border-white/10"
+              className="rounded-2xl rounded-bl-md border border-line bg-surface-2 px-4 py-3"
               aria-live="polite"
             >
               <div className="flex items-center gap-1.5">
                 {[0, 150, 300].map((delay) => (
                   <span
                     key={delay}
-                    className="w-1.5 h-1.5 rounded-full bg-blue-300 animate-bounce"
+                    className="h-1.5 w-1.5 animate-bounce rounded-full bg-accent"
                     style={{ animationDelay: `${delay}ms` }}
                   />
                 ))}
@@ -183,31 +199,33 @@ export default function ChatWindow({ onClose, isclose }: ChatWindowProps) {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input Area */}
+      {/* Input */}
       <form
         onSubmit={handleSendMessage}
-        className="border-t border-white/10 p-3"
+        className="flex-none border-t border-line p-3"
       >
         <div className="flex items-center gap-2">
           <input
+            ref={inputRef}
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             placeholder="Type your message..."
-            className="flex-1 px-4 py-2.5 bg-white/5 border border-white/10 rounded-full text-sm text-light placeholder:text-secondary/60 focus:outline-none focus:border-sky-400/60 focus:ring-2 focus:ring-sky-400/20 transition-all"
+            className="flex-1 rounded-full border border-line bg-background px-4 py-3 text-sm text-foreground transition-colors duration-300 placeholder:text-dim focus:border-accent focus:outline-none"
             aria-label="Chat message input"
             disabled={isWaiting}
           />
           <button
             type="submit"
-            className="w-10 h-10 shrink-0 rounded-full bg-gradient-to-r from-sky-500 to-blue-600 text-white flex items-center justify-center hover:opacity-90 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-40 disabled:hover:scale-100 cursor-pointer"
+            className="grid h-11 w-11 flex-none cursor-pointer place-items-center rounded-full bg-accent text-background transition-transform duration-300 hover:scale-105 focus:outline-none disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:scale-100"
             disabled={!inputValue.trim() || isWaiting}
             aria-label="Send message"
           >
-            <SendHorizontal size={18} />
+            <ArrowUp size={18} />
           </button>
         </div>
-      </form>
-    </div>
+        </form>
+      </div>
+    </>
   );
 }

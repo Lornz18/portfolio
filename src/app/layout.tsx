@@ -1,44 +1,52 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Space_Grotesk } from "next/font/google";
+import { Inter, Inter_Tight, DM_Mono } from "next/font/google";
 import Header from "./components/header";
 import Footer from "./components/footer";
+import ChatProvider from "./components/chat-context";
 
-const spaceGrotesk = Space_Grotesk({
+/** Display face — used for the oversized hero and section headlines. */
+const interTight = Inter_Tight({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"], // choose the weights you need
-  variable: "--font-space-grotesk", // optional: for CSS variable
+  weight: ["400", "500", "600"],
+  variable: "--font-inter-tight",
+  display: "swap",
 });
 
-/* const geistSans = Geist({
-  variable: "--font-geist-sans",
+/** Body copy. */
+const inter = Inter({
   subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-inter",
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+/** Every label, year, category and caption on the site. */
+const dmMono = DM_Mono({
   subsets: ["latin"],
-}); */
+  weight: ["300", "400", "500"],
+  variable: "--font-dm-mono",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
-  title: "Audie.dev",
+  title: "Audie Malaluan — Full Stack Developer",
   description:
-    "Welcome to Audie.dev, a portfolio showcasing my projects, skills, and experience as a web developer. Explore my work, learn about my background, and get in touch for collaboration opportunities.",
+    "Full stack developer building AI-powered platforms and real-time web applications from zero to one. Founding developer at AgentiumLabs.",
   openGraph: {
-    title: "Audie.dev",
+    title: "Audie Malaluan — Full Stack Developer",
     description:
-      "Welcome to Audie.dev, a portfolio showcasing my projects, skills, and experience as a web developer. Explore my work, learn about my background, and get in touch for collaboration opportunities.",
+      "Full stack developer building AI-powered platforms and real-time web applications from zero to one. Founding developer at AgentiumLabs.",
     images: [
       {
-        url: "https://audie-dev.vercel.app/Audie.dev.png", // Replace with your actual image URL
+        url: "https://audie-dev.vercel.app/Audie.dev.png",
         width: 1200,
         height: 630,
-        alt: "Audie.dev - Web Developer Portfolio",
+        alt: "Audie Malaluan — Full Stack Developer",
       },
     ],
   },
 };
-
 
 export default function RootLayout({
   children,
@@ -46,17 +54,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    // The font variables must live on <html> so they resolve at :root, where
+    // Tailwind declares --font-sans / --font-display / --font-mono.
+    <html
+      lang="en"
+      className={`${interTight.variable} ${inter.variable} ${dmMono.variable}`}
+    >
       <head>
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         />
       </head>
-      <body className={`${spaceGrotesk.className} antialiased`}>
-        <Header></Header>
-        {children}
-        <Footer></Footer>
+      <body className="antialiased">
+        <ChatProvider>
+          <Header />
+          {children}
+          <Footer />
+        </ChatProvider>
       </body>
     </html>
   );

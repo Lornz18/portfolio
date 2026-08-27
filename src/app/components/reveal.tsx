@@ -5,10 +5,16 @@ interface RevealProps {
   children: React.ReactNode;
   className?: string;
   delay?: number;
+  id?: string;
 }
 
 /** Fades + slides children into view the first time they enter the viewport. */
-export default function Reveal({ children, className = "", delay = 0 }: RevealProps) {
+export default function Reveal({
+  children,
+  className = "",
+  delay = 0,
+  id,
+}: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -31,6 +37,7 @@ export default function Reveal({ children, className = "", delay = 0 }: RevealPr
   return (
     <div
       ref={ref}
+      id={id}
       className={`reveal ${className}`}
       style={delay ? { transitionDelay: `${delay}ms` } : undefined}
     >

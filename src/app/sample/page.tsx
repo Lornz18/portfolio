@@ -1,6 +1,5 @@
 "use client";
 import {
-  MessageCircle,
   UploadCloud,
   ImageIcon,
   Sparkles,
@@ -8,7 +7,6 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
-import Chatbot from "../components/chatbot";
 import Reveal from "../components/reveal";
 
 export default function SamplePage() {
@@ -18,7 +16,6 @@ export default function SamplePage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [isDragging, setIsDragging] = useState(false);
-  const [isChatOpen, setIsChatOpen] = useState(false);
 
   const processFile = (selectedFile: File | null) => {
     if (!selectedFile) return;
@@ -226,20 +223,6 @@ export default function SamplePage() {
         </div>
       </div>
 
-      {/* Chatbot */}
-      {!isChatOpen && (
-        <button
-          onClick={() => setIsChatOpen(true)}
-          className="fixed bottom-6 right-6 bg-gradient-to-r from-sky-500 to-blue-600 text-white p-4 rounded-full shadow-xl shadow-blue-500/30 transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-400 z-50"
-          aria-label="Open chat"
-        >
-          <MessageCircle size={24} />
-        </button>
-      )}
-
-      {isChatOpen && (
-        <Chatbot onClose={() => setIsChatOpen(false)} isclose={isChatOpen} />
-      )}
     </div>
   );
 }
